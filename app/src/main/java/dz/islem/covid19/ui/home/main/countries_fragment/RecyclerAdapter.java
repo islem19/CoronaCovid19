@@ -1,29 +1,23 @@
-package dz.islem.covid19.ui.main;
+package dz.islem.covid19.ui.home.main.countries_fragment;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dz.islem.covid19.R;
 import dz.islem.covid19.data.network.model.CountryDataModel;
 
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainViewHolder> {
 
     private List<CountryDataModel> mCountriesData;
 
-    public MainAdapter(){
+    public RecyclerAdapter(){
         mCountriesData = new ArrayList<>();
     }
 

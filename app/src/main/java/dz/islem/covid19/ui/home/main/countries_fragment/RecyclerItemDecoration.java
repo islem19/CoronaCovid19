@@ -1,14 +1,14 @@
-package dz.islem.covid19.ui.main;
+package dz.islem.covid19.ui.home.main.countries_fragment;
 
 import android.graphics.Rect;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+public class RecyclerItemDecoration extends RecyclerView.ItemDecoration {
     private int space;
 
-    public SpacesItemDecoration(int space) {
+    public RecyclerItemDecoration(int space) {
         this.space = space;
     }
 

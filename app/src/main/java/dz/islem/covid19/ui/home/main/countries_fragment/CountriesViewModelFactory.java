@@ -1,16 +1,16 @@
-package dz.islem.covid19.ui.main;
+package dz.islem.covid19.ui.home.main.countries_fragment;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
 import dz.islem.covid19.data.network.services.DataService;
 
-public class MainViewModelFactory implements ViewModelProvider.Factory {
+
+public class CountriesViewModelFactory implements ViewModelProvider.Factory {
 
     private final DataService mDataService;
 
-    public MainViewModelFactory(DataService mDataService){
+    public CountriesViewModelFactory(DataService mDataService){
         this.mDataService = mDataService;
     }
 
@@ -18,8 +18,8 @@ public class MainViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(MainViewModel.class)) {
-            return (T) new MainViewModel(mDataService);
+        if (modelClass.isAssignableFrom(CountriesViewModel.class)) {
+            return (T) new CountriesViewModel(mDataService);
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class");

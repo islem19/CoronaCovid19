@@ -17,6 +17,6 @@ public interface DataApi {
     Call<List<CountryDataModel>> getAllData();
 
     @GET("/countries/{country}")
-    Call<CountryDataModel> getDatabyCountry(@Path("country") String country);
+    Call<CountryDataModel> getDataByCountry(@Path("country") String country);
 
 }

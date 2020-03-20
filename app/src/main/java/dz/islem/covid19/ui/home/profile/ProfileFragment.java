@@ -11,7 +11,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dz.islem.covid19.App;
 import dz.islem.covid19.R;
+import dz.islem.covid19.Utils;
 import dz.islem.covid19.data.DataManager;
 import dz.islem.covid19.data.network.model.CountryDataModel;
 import dz.islem.covid19.ui.base.BaseFragment;
@@ -57,7 +59,8 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
 
     private void showProfile() {
         viewModel.getCountryData().observe(this, new CountryDataObserver());
-        viewModel.loadCountryData("Algeria");
+        String currentCountry = Utils.getCountryName(getActivity().getApplicationContext());
+        viewModel.loadCountryData(currentCountry);
     }
 
     private class CountryDataObserver implements Observer<CountryDataModel> {

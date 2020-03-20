@@ -20,11 +20,11 @@ import dz.islem.covid19.ui.base.BaseFragment;
 public class GlobalFragment extends BaseFragment<GlobalViewModel> {
     private static final String TAG = "GlobalFragment";
     private GlobalViewModel viewModel;
-    @BindView(R.id.total_cases_value)
+    @BindView(R.id.caseValue)
     TextView totalCases;
-    @BindView(R.id.death_cases_value)
+    @BindView(R.id.deathValue)
     TextView deathCases;
-    @BindView(R.id.recover_cases_value)
+    @BindView(R.id.recoverValue)
     TextView recoverCases;
 
     public GlobalFragment() {
@@ -69,7 +69,6 @@ public class GlobalFragment extends BaseFragment<GlobalViewModel> {
             setRecoverCases(String.valueOf(global.getNbrRecovered()));
         }
     }
-
 
     private void setTotalCases(String totalCases) {
         this.totalCases.setText(totalCases);

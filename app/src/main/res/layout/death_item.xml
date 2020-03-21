@@ -16,7 +16,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -24,14 +24,14 @@
             android:layout_width="120dp"
             android:layout_height="30dp"
             android:gravity="center_vertical"
-           android:textColor="@color/colorDeathCases"
+            android:textColor="@color/colorDeathCases"
             android:textSize="26sp"
             android:textStyle="bold"/>
 
         <TextView
             android:layout_width="120dp"
             android:layout_height="20dp"
-            android:textColor="@color/colorHintTextLight"
+            android:textColor="@color/colorHintTextDark"
             android:textStyle="italic"
             android:textSize="12sp"
             android:text="Total deaths"/>
@@ -58,13 +58,18 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="20dp"
-            android:textColor="@color/colorHintTextLight"
+            android:textColor="@color/colorHintTextDark"
             android:textStyle="italic"
             android:textSize="12sp"
             android:text="Today deaths"/>
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"/>
 
 </LinearLayout>
 

@@ -16,6 +16,6 @@
     <string name="developed">Développé par</string>
     <string name="first_dev">Abdelkader SELLAMI (sellislem@gmail.com)</string>
     <string name="second_dev">Billel BOUMESSAIDIA (billel.bmsd@gmail.com)</string>
-    <string name="credit">Source: worldometer.info/coronavirus \n fourni par NovalCOVID API</string>
+    <string name="credit">Source: worldometers.info/coronavirus \n fourni par NovalCOVID API</string>
 
 </resources>

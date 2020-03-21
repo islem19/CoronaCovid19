@@ -1,6 +1,7 @@
 package com.covid19.app.data;
 
 import com.covid19.app.data.network.services.DataService;
+import com.covid19.app.data.network.services.location.LocationService;
 
 public class DataManager {
 
@@ -16,6 +17,10 @@ public class DataManager {
 
     public DataService getDataService(){
         return DataService.getInstance();
+    }
+
+    public LocationService getLocationService(){
+        return LocationService.getInstance();
     }
 
 }

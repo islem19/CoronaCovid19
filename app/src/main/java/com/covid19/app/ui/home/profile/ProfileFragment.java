@@ -1,6 +1,7 @@
 package com.covid19.app.ui.home.profile;
 
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.covid19.app.Utils;
 import com.covid19.app.ui.base.BaseFragment;
+import com.covid19.app.ui.home.MainActivity;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     private static final String TAG = "ProfileFragment";
@@ -76,8 +80,8 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
 
     private void showProfile() {
         viewModel.getCountryData().observe(this, new CountryDataObserver());
-        String currentCountry = Utils.getCountryName(getActivity().getApplicationContext());
-        viewModel.loadCountryData(currentCountry);
+        String country = ((MainActivity) getActivity()).getCountry();
+;        viewModel.loadCountryData(country);
     }
 
     private void showAboutDialog(){

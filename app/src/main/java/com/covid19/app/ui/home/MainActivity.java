@@ -1,12 +1,16 @@
 package com.covid19.app.ui.home;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.covid19.app.R;
+import com.covid19.app.data.network.model.Location;
 import com.google.android.material.tabs.TabLayout;
 import com.covid19.app.data.DataManager;
 import com.covid19.app.ui.base.BaseActivity;
@@ -20,20 +24,24 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-
 public class MainActivity extends BaseActivity<MainViewModel> {
 
-    private final String TAG ="MainActivity";
+    public static final String MY_PREFS_NAME = "current_country";
+    private final String TAG = "MainActivity";
     @BindView(R.id.mainPager)
     ViewPager mainPager;
     @BindView(R.id.mainTabs)
     TabLayout mainTabLayout;
     private MainPagerAdapter mainAdapter;
+    private MainViewModel viewModel;
+    private SharedPreferences.Editor editor;
+    private String country;
 
     @Override
     public MainViewModel createViewModel() {
-        MainViewModelFactory factory = new MainViewModelFactory(DataManager.getInstance().getDataService());
-        return ViewModelProviders.of(this,factory).get(MainViewModel.class);
+        MainViewModelFactory factory = new MainViewModelFactory(DataManager.getInstance().getLocationService());
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
+        return viewModel;
     }
 
     @Override
@@ -41,15 +49,18 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        SharedPreferences prefs = getSharedPreferences(MainActivity.MY_PREFS_NAME, MODE_PRIVATE);
+        country = prefs.getString("country", null);
+        if (country == null) {
+            editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+            viewModel.loadLocationData();
+            viewModel.getLocationData().observe(this, new LocationDataObserver());
+        } else
+            loadFragment(R.id.profileContainer, new ProfileFragment());
         setMainPagerAdapter();
         mainTabLayout.setupWithViewPager(mainPager, true);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        loadFragment(R.id.profileContainer, new ProfileFragment());
-    }
 
     private void setMainPagerAdapter() {
         mainAdapter = new MainPagerAdapter(getSupportFragmentManager(), 0);
@@ -72,6 +83,19 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         }
     }
 
+    private class LocationDataObserver implements Observer<Location> {
+        @Override
+        public void onChanged(Location location) {
+            if (location == null) return;
+            Log.d(TAG, "onChanged: location " + location.getCountry());
+            editor.putString("country", location.getCountry());
+            editor.apply();
+            country = location.getCountry();
+            loadFragment(R.id.profileContainer, new ProfileFragment());
+        }
+    }
 
-
+    public String getCountry() {
+        return country;
+    }
 }

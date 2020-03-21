@@ -86,7 +86,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
 
     private void showAboutDialog(){
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-        View dialogView = layoutInflater.inflate(R.layout.about_dialog,null);;
+        View dialogView = layoutInflater.inflate(R.layout.about_dialog,null);
         AlertDialog alertDialog = new  AlertDialog.Builder(getActivity()).create();
         alertDialog.setView(dialogView);
         alertDialog.show();

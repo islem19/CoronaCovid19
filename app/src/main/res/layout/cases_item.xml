@@ -34,7 +34,7 @@
             android:textColor="@color/colorHintTextDark"
             android:textStyle="italic"
             android:textSize="12sp"
-            android:text="Total cases"/>
+            android:text="@string/total_cases_title"/>
 
     </LinearLayout>
 
@@ -59,7 +59,7 @@
             android:textColor="@color/colorHintTextDark"
             android:textStyle="italic"
             android:textSize="12sp"
-            android:text="Active cases"/>
+            android:text="@string/active_cases_title"/>
 
     </LinearLayout>
 
@@ -84,7 +84,7 @@
             android:textColor="@color/colorHintTextDark"
             android:textStyle="italic"
             android:textSize="12sp"
-            android:text="Today cases"/>
+            android:text="@string/today_cases_title"/>
 
     </LinearLayout>
 </LinearLayout>

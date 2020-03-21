@@ -34,7 +34,7 @@
             android:textColor="@color/colorHintTextDark"
             android:textStyle="italic"
             android:textSize="12sp"
-            android:text="Total deaths"/>
+            android:text="@string/total_death_title"/>
 
     </LinearLayout>
 
@@ -61,7 +61,7 @@
             android:textColor="@color/colorHintTextDark"
             android:textStyle="italic"
             android:textSize="12sp"
-            android:text="Today deaths"/>
+            android:text="@string/today_death_title"/>
 
     </LinearLayout>
 

@@ -68,8 +68,8 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         mainAdapter.addFragment(new GlobalFragment());
         mainAdapter.addFragment(new CountriesFragment());
         ArrayList<String> titles = new ArrayList<>();
-        titles.add("Global State");
-        titles.add("Countries State");
+        titles.add(this.getResources().getString(R.string.global_fragment));
+        titles.add(this.getResources().getString(R.string.countries_fragment));
         mainAdapter.addTitles(titles);
         mainPager.setAdapter(mainAdapter);
     }

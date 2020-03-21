@@ -7,15 +7,13 @@
     android:layout_height="320dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-
     <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@drawable/bg_tabs"
         android:paddingStart="5sp"
-        android:text="Details"
+        android:text="@string/details"
         android:gravity="center_vertical"
         android:textColor="@color/colorHintText"
         android:textSize="22sp"

@@ -1,6 +1,8 @@
 package com.covid19.app.ui.home.main.countries_fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,12 +15,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.covid19.app.R;
 
+import static android.content.ContentValues.TAG;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainViewHolder> {
 
     private List<CountryDataModel> mCountriesData;
+    private View.OnClickListener onClickListener;
 
-    public RecyclerAdapter(){
+    public RecyclerAdapter(View.OnClickListener listener){
+
         mCountriesData = new ArrayList<>();
+        onClickListener = listener;
     }
 
     public void addCountryData(CountryDataModel mCountryData, int position){
@@ -35,6 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainVi
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.country_item, parent,false);
+        mView.setOnClickListener(onClickListener);
         return new MainViewHolder(mView);
     }
 
@@ -48,8 +56,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainVi
         return mCountriesData == null ? 0 : mCountriesData.size();
     }
 
-    public CountryDataModel getCountryData(int postion){
-        return mCountriesData.get(postion);
+    public CountryDataModel getCountryData(int position){
+        return mCountriesData.get(position);
     }
 
     public class MainViewHolder extends RecyclerView.ViewHolder {
@@ -92,5 +100,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainVi
             this.recoverCases.setText(recoverCases);
         }
     }
+
+
 
 }

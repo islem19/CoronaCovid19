@@ -96,7 +96,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:text="sellislem@gmail.com "
+        android:text="Abdelkader SELLAMI (sellislem@gmail.com) "
         android:textColor="@color/colorHintTextDark"
         android:textSize="12sp"
         android:textStyle="italic"
@@ -115,7 +115,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:text="billel.bmsd@gmail.com"
+        android:text="Billel BOUMESSAIDIA (billel.bmsd@gmail.com)"
         android:textColor="@color/colorHintTextDark"
         android:textSize="12sp"
         android:textStyle="italic"
@@ -140,7 +140,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,10 +1,14 @@
 package dz.islem.covid19.ui.home.profile;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -21,6 +25,10 @@ import dz.islem.covid19.ui.base.BaseFragment;
 public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     private static final String TAG = "ProfileFragment";
     private ProfileViewModel viewModel;
+    @BindView(R.id.about)
+    ImageView aboutImageView;
+    @BindView(R.id.progressBarProfile)
+    ProgressBar progressBar;
     @BindView(R.id.countryTitle)
     TextView countryTitle;
     @BindView(R.id.caseItem)
@@ -46,14 +54,22 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         // Inflate the layout for this
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
+        setProfileVisibility(View.INVISIBLE);
 
         return view;
+    }
+
+    private void setProfileVisibility(int id) {
+        countryTitle.setVisibility(id);
+        caseItem.setVisibility(id);
+        deathItem.setVisibility(id);
+        recoverItem.setVisibility(id);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        aboutImageView.setOnClickListener(new AboutListener());
         viewModel = getViewModel();
         showProfile();
     }
@@ -62,6 +78,22 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         viewModel.getCountryData().observe(this, new CountryDataObserver());
         String currentCountry = Utils.getCountryName(getActivity().getApplicationContext());
         viewModel.loadCountryData(currentCountry);
+    }
+
+    private void showAboutDialog(){
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View dialogView = layoutInflater.inflate(R.layout.about_dialog,null);;
+        AlertDialog alertDialog = new  AlertDialog.Builder(getActivity()).create();
+        alertDialog.setView(dialogView);
+        alertDialog.show();
+
+        dialogView.findViewById(R.id.aboutCancelBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
     }
 
     private class CountryDataObserver implements Observer<CountryDataModel> {
@@ -75,6 +107,9 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
             setTotalDeathCases(String.valueOf(country.getNbrDeath()));
             setTodayDeathCases(String.valueOf(country.getTodayDeaths()));
             setRecoverCases(String.valueOf(country.getNbrRecovered()));
+
+            setProfileVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -107,6 +142,17 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     private void setRecoverCases(String recoverCases) {
 
         ( (TextView) this.recoverItem.findViewById(R.id.recoverValue)).setText(recoverCases);
+    }
+
+
+    private class AboutListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View view) {
+            Log.d(TAG, "onClick: about");
+            showAboutDialog();
+
+        }
     }
 
 }

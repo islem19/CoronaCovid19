@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#F65A8F</color>
-    <color name="colorPrimaryDark">#830303</color>
+    <color name="colorPrimaryDark">#C30B49</color>
     <color name="colorAccent">#595E5D</color>
 
     <color name="colorTotalCases">#ffff8800</color>
@@ -12,5 +12,6 @@
     <color name="colorHintText">#CCDBDDD5</color>
     <color name="colorHintTextLight">#CCFFFFFF</color>
     <color name="colorHintTextDark">#CC252525</color>
+    <color name="colorTransparent">#00000000</color>
 
 </resources>

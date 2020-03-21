@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
     <FrameLayout
         android:id="@+id/profileContainer"
         android:background="@drawable/bg_profile"

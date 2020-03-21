@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -42,8 +43,6 @@ public class GlobalFragment extends BaseFragment<GlobalViewModel> {
         // Inflate the layout for this
        View view = inflater.inflate(R.layout.fragment_global, container, false);
         ButterKnife.bind(this, view);
-       viewModel = getViewModel();
-       showGlobal();
        return view;
     }
 

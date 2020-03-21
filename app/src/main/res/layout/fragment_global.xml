@@ -5,17 +5,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-
     <ImageView
         android:id="@+id/cases_img"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="8dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:src="@drawable/ic_cases"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.060000002" />
 
     <LinearLayout
         android:id="@+id/cases_description"
@@ -23,9 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cases_img">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cases_img"
+        app:layout_constraintVertical_bias="0.0">
+
         <TextView
             android:id="@+id/caseValue"
             android:layout_width="170dp"
@@ -35,12 +40,13 @@
             android:textColor="@color/colorTotalCases"
             android:textSize="30sp"
             android:textStyle="bold" />
+
         <TextView
             android:layout_width="120dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
-            android:text="@string/total_cases_title"
             android:gravity="center"
+            android:text="@string/total_cases_title"
             android:textColor="@color/colorHintTextDark"
             android:textSize="12sp"
             android:textStyle="italic" />

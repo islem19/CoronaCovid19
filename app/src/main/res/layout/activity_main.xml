@@ -56,10 +56,20 @@
                 android:layout_gravity="center|bottom"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:background="@drawable/bg_profile"
+            android:id="@+id/mainBanner"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_key">
+        </com.google.android.gms.ads.AdView>
     </LinearLayout>
 
 

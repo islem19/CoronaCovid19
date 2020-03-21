@@ -34,7 +34,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainVi
     @NonNull
     @Override
     public MainViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_country_stat, parent,false);
+        View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.country_item, parent,false);
         return new MainViewHolder(mView);
     }
 

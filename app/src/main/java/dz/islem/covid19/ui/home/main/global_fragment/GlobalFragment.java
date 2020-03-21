@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -20,11 +21,11 @@ import dz.islem.covid19.ui.base.BaseFragment;
 public class GlobalFragment extends BaseFragment<GlobalViewModel> {
     private static final String TAG = "GlobalFragment";
     private GlobalViewModel viewModel;
-    @BindView(R.id.total_cases_value)
+    @BindView(R.id.caseValue)
     TextView totalCases;
-    @BindView(R.id.death_cases_value)
+    @BindView(R.id.deathValue)
     TextView deathCases;
-    @BindView(R.id.recover_cases_value)
+    @BindView(R.id.recoverValue)
     TextView recoverCases;
 
     public GlobalFragment() {
@@ -42,8 +43,6 @@ public class GlobalFragment extends BaseFragment<GlobalViewModel> {
         // Inflate the layout for this
        View view = inflater.inflate(R.layout.fragment_global, container, false);
         ButterKnife.bind(this, view);
-       viewModel = getViewModel();
-       showGlobal();
        return view;
     }
 
@@ -69,7 +68,6 @@ public class GlobalFragment extends BaseFragment<GlobalViewModel> {
             setRecoverCases(String.valueOf(global.getNbrRecovered()));
         }
     }
-
 
     private void setTotalCases(String totalCases) {
         this.totalCases.setText(totalCases);

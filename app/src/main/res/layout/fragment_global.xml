@@ -5,74 +5,143 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-        <TextView
-            android:id="@+id/total_cases_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TOTAL"
-            android:textSize="20dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@android:color/holo_orange_dark"
-            app:layout_constraintTop_toBottomOf="@+id/item_description"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+    <ImageView
+        android:id="@+id/cases_img"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="8dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:src="@drawable/ic_cases"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.060000002" />
+
+    <LinearLayout
+        android:id="@+id/cases_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cases_img"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
-            android:id="@+id/total_cases_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10"
-            android:textSize="20dp"
-            android:textColor="@android:color/holo_orange_dark"
-            app:layout_constraintTop_toBottomOf="@+id/total_cases_description"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
-
+            android:id="@+id/caseValue"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/colorTotalCases"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/death_cases_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="DEATHS"
-            android:textSize="20dp"
-            android:textColor="@android:color/holo_red_dark"
-            app:layout_constraintTop_toBottomOf="@+id/total_cases_description"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/total_cases_description"/>
+            android:layout_width="120dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/total_cases_title"
+            android:textColor="@color/colorHintTextDark"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <ImageView
+        android:id="@+id/death_img"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:src="@drawable/ic_death"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/cases_description"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/death_img">
 
         <TextView
-            android:id="@+id/death_cases_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10"
-            android:textSize="20dp"
-            android:textColor="@android:color/holo_red_dark"
-            app:layout_constraintTop_toBottomOf="@+id/death_cases_description"
-            app:layout_constraintRight_toRightOf="@+id/death_cases_description"
-            app:layout_constraintLeft_toLeftOf="@+id/death_cases_description"/>
+            android:id="@+id/deathValue"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/colorDeathCases"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/recover_cases_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="RECOVER"
-            android:textSize="20dp"
-            android:textColor="@android:color/holo_green_dark"
-            app:layout_constraintTop_toBottomOf="@+id/total_cases_description"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/total_cases_description"/>
+            android:layout_width="120dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:text="@string/total_death_title"
+            android:gravity="center"
+            android:textColor="@color/colorHintTextDark"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/recover_img"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:src="@drawable/ic_recover"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/cases_description"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/recover_img">
 
         <TextView
-            android:id="@+id/recover_cases_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10"
-            android:textSize="20dp"
-            android:textColor="@android:color/holo_green_dark"
-            app:layout_constraintTop_toBottomOf="@+id/recover_cases_description"
-            app:layout_constraintRight_toRightOf="@+id/recover_cases_description"
-            app:layout_constraintLeft_toLeftOf="@+id/recover_cases_description"/>
+            android:id="@+id/recoverValue"
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/colorRecoveredCases"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:text="@string/total_recover_title"
+            android:gravity="center"
+            android:textColor="@color/colorHintTextDark"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

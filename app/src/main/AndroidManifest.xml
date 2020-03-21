@@ -16,7 +16,12 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-4756765024373725~9622341322"/>
+
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.splash.SplashActivity"
             android:theme="@style/AppTheme.MainActivity">
             <intent-filter>
@@ -26,7 +31,9 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".ui.home.MainActivity"
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".ui.home.MainActivity"
             android:theme="@style/AppTheme.MainActivity">
 
         </activity>

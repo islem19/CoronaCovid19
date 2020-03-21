@@ -8,9 +8,17 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.covid19.app.R;
 import com.covid19.app.data.network.model.Location;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.tabs.TabLayout;
 import com.covid19.app.data.DataManager;
 import com.covid19.app.ui.base.BaseActivity;
@@ -26,16 +34,18 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity<MainViewModel> {
 
-    public static final String MY_PREFS_NAME = "current_country";
+    public static final String INTERSTITIAL_AD_KEY = "ca-app-pub-4756765024373725/6038319531";
     private final String TAG = "MainActivity";
+    @BindView(R.id.mainBanner)
+    AdView bannerView;
     @BindView(R.id.mainPager)
     ViewPager mainPager;
     @BindView(R.id.mainTabs)
     TabLayout mainTabLayout;
     private MainPagerAdapter mainAdapter;
     private MainViewModel viewModel;
-    private SharedPreferences.Editor editor;
-    private String country;
+    private InterstitialAd mInterstitialAd;
+
 
     @Override
     public MainViewModel createViewModel() {
@@ -49,16 +59,58 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        SharedPreferences prefs = getSharedPreferences(MainActivity.MY_PREFS_NAME, MODE_PRIVATE);
-        country = prefs.getString("country", null);
-        if (country == null) {
-            editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        initAdMob();
+        DataManager.getInstance().setRunCount();
+        Log.d(TAG, "onCreate: count"+DataManager.getInstance().getRunCount());
+        if (DataManager.getInstance().getDefaultCountry() == null) {
             viewModel.loadLocationData();
             viewModel.getLocationData().observe(this, new LocationDataObserver());
         } else
             loadFragment(R.id.profileContainer, new ProfileFragment());
         setMainPagerAdapter();
         mainTabLayout.setupWithViewPager(mainPager, true);
+    }
+
+    private void initAdMob(){
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        bannerView.loadAd(adRequest);
+        bannerView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded() {
+                bannerView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Log.e(TAG, "onAdFailedToLoad: " + errorCode);
+                bannerView.setVisibility(View.GONE);
+            }
+        });
+        if(!bannerView.isLoading()) bannerView.setVisibility(View.GONE);
+
+        if( DataManager.getInstance().getRunCount() == DataManager.MAX_COUNT) {
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId(INTERSTITIAL_AD_KEY);
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    mInterstitialAd.show();
+                }
+
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    Log.e(TAG, "onAdFailedToLoad: " + errorCode);
+                }
+            });
+        }
     }
 
 
@@ -88,14 +140,9 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         public void onChanged(Location location) {
             if (location == null) return;
             Log.d(TAG, "onChanged: location " + location.getCountry());
-            editor.putString("country", location.getCountry());
-            editor.apply();
-            country = location.getCountry();
+            DataManager.getInstance().setDefaultCountry(location.getCountry());
             loadFragment(R.id.profileContainer, new ProfileFragment());
         }
     }
 
-    public String getCountry() {
-        return country;
-    }
 }

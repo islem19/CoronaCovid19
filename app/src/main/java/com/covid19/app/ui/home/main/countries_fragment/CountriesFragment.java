@@ -97,7 +97,6 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
             int itemPosition = mRecyclerView.getChildLayoutPosition(view);
             CountryDataModel item = recyclerAdapter.getCountryData(itemPosition);
             showDetailDialog(item.getCountry());
-            Toast.makeText(getActivity(), item.getCountry(), Toast.LENGTH_LONG).show();
         }
     }
 

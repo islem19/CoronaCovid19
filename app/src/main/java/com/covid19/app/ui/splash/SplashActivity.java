@@ -16,11 +16,14 @@ import com.covid19.app.ui.base.BaseActivity;
 
 import com.covid19.app.ui.home.MainActivity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class SplashActivity extends BaseActivity<SplashViewModel> {
     private static final String TAG = "SplashScreenActivity";
     private static final int DELAY = 3000;
-
+    @BindView(R.id.logoImage) ImageView mLogoImage;
 
 
 
@@ -33,12 +36,12 @@ public class SplashActivity extends BaseActivity<SplashViewModel> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        ButterKnife.bind(this);
         RotateAnimation rotate = new RotateAnimation(0, 180, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotate.setDuration(DELAY);
         rotate.setInterpolator(new LinearInterpolator());
 
-        ( (ImageView)findViewById(R.id.logoImage)).setAnimation(rotate);
+        mLogoImage.setAnimation(rotate);
 
         nextScreen();
     }

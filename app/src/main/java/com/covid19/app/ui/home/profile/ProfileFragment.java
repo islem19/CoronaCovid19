@@ -81,7 +81,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     private void showProfile() {
         viewModel.getCountryData().observe(this, new CountryDataObserver());
         String country = ((MainActivity) getActivity()).getCountry();
-;        viewModel.loadCountryData(country);
+        viewModel.loadCountryData(country);
     }
 
     private void showAboutDialog(){

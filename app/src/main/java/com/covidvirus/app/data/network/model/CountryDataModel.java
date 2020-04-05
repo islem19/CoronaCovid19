@@ -38,9 +38,7 @@ public class CountryDataModel implements Serializable {
     @SerializedName("critical")
     private long nbrCriticalCases;
 
-    @Expose
-    @SerializedName("casesPerOneMillion")
-    private long nbrCasesPerOneMillion;
+
 
     public CountryDataModel(String country, long nbrCases,
                             long todayCases, long nbrDeath,
@@ -55,7 +53,6 @@ public class CountryDataModel implements Serializable {
         this.nbrRecovered = nbrRecovered;
         this.nbrActiveCases = nbrActiveCases;
         this.nbrCriticalCases = nbrCriticalCases;
-        this.nbrCasesPerOneMillion = nbrCasesPerOneMillion;
     }
 
     public String getCountry() {
@@ -122,11 +119,4 @@ public class CountryDataModel implements Serializable {
         this.nbrCriticalCases = nbrCriticalCases;
     }
 
-    public long getNbrCasesPerOneMillion() {
-        return nbrCasesPerOneMillion;
-    }
-
-    public void setNbrCasesPerOneMillion(long nbrCasesPerOneMillion) {
-        this.nbrCasesPerOneMillion = nbrCasesPerOneMillion;
-    }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.covidvirus.app.R;
 import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.CountryDataModel;
@@ -100,19 +102,11 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
         alertDialog.setCancelable(true);
         viewModel.loadCountryData(country);
 
-        viewModel.getCountryData().observe(this, new Observer<CountryDataModel>() {
-            @Override
-            public void onChanged(CountryDataModel countryDataModel) {
-                setupDialogView(dialogView, countryDataModel );
-            }
-        });
+        viewModel.getCountryData().observe(this, countryDataModel -> setupDialogView(dialogView, countryDataModel ));
 
-        dialogView.findViewById(R.id.aboutCancelBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.cancel();
-                alertDialog.dismiss();
-            }
+        dialogView.findViewById(R.id.aboutCancelBtn).setOnClickListener(view -> {
+            alertDialog.cancel();
+            alertDialog.dismiss();
         });
 
         alertDialog.show();
@@ -120,6 +114,7 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
 
     private void setupDialogView(View dialogView, CountryDataModel country){
         if (country == null) return;
+        Glide.with(this).load(country.getCountryInfo().getFlag()).into((ImageView)dialogView.findViewById(R.id.flag_img));
         ((TextView)dialogView.findViewById(R.id.countryTitle)).setText(country.getCountry());
         ((TextView)dialogView.findViewById(R.id.totalCaseValue)).setText(String.valueOf(country.getNbrCases()));
         ((TextView)dialogView.findViewById(R.id.activeCaseValue)).setText(String.valueOf(country.getNbrActiveCases()));
@@ -131,6 +126,7 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
     }
 
     private void cleanDialogView(View dialogView){
+        Glide.with(this).load("").into((ImageView)dialogView.findViewById(R.id.flag_img));
         ((TextView)dialogView.findViewById(R.id.countryTitle)).setText("");
         ((TextView)dialogView.findViewById(R.id.totalCaseValue)).setText("");
         ((TextView)dialogView.findViewById(R.id.activeCaseValue)).setText("");

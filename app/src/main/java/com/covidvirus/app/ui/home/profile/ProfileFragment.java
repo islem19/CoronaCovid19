@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.Glide;
 import com.covidvirus.app.R;
 import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.CountryDataModel;
@@ -37,6 +38,8 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     LinearLayout deathItem;
     @BindView(R.id.recoverItem)
     LinearLayout recoverItem;
+    @BindView(R.id.flag_img)
+    ImageView flag_img;
 
 
     public ProfileFragment() {
@@ -60,6 +63,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     }
 
     private void setProfileVisibility(int id) {
+        flag_img.setVisibility(id);
         countryTitle.setVisibility(id);
         caseItem.setVisibility(id);
         deathItem.setVisibility(id);
@@ -100,6 +104,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         public void onChanged(CountryDataModel country) {
             if (country == null) return;
             setCountryName(country.getCountry());
+            setFlagImage(country.getCountryInfo().getFlag());
             setTotalCases(String.valueOf(country.getNbrCases()));
             setActiveCases(String.valueOf(country.getNbrActiveCases()));
             setTodayCases(String.valueOf(country.getTodayCases()));
@@ -112,6 +117,9 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         }
     }
 
+    private void setFlagImage(String link) {
+        Glide.with(this).load(link).into(flag_img);
+    }
     private void setCountryName(String countryName) {
         this.countryTitle.setText(countryName);
     }

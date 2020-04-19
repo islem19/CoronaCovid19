@@ -25,7 +25,7 @@
             android:layout_height="30dp"
             android:gravity="center_vertical"
             android:textColor="@color/colorDeathCases"
-            android:textSize="26sp"
+            android:textSize="22sp"
             android:textStyle="bold"/>
 
         <TextView
@@ -52,7 +52,7 @@
             android:layout_height="30dp"
             android:gravity="center_vertical"
             android:textColor="@color/colorDeathCases"
-            android:textSize="26sp"
+            android:textSize="22sp"
             android:textStyle="bold"/>
 
         <TextView

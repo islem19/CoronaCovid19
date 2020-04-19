@@ -3,9 +3,12 @@ package com.covidvirus.app.ui.home.main.countries_fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.covidvirus.app.data.network.model.CountryDataModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,19 +68,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainVi
         TextView deathCases;
         @BindView(R.id.recover_cases_value)
         TextView recoverCases;
+        @BindView(R.id.flag_img)
+        ImageView flagImg;
+        private View itemView;
 
 
         public MainViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.itemView = itemView;
             ButterKnife.bind(this, itemView);
         }
 
         void bind(int position){
             CountryDataModel mCountryData = getCountryData(position);
+            setCountryFlag(mCountryData.getCountryInfo().getFlag());
             setCountryName(mCountryData.getCountry());
             setTotalCases(String.valueOf(mCountryData.getNbrCases()));
             setDeathCases(String.valueOf(mCountryData.getNbrDeath()));
             setRecoverCases(String.valueOf(mCountryData.getNbrRecovered()));
+        }
+
+        public void setCountryFlag(String link){
+            Glide.with(itemView).load(link).into(flagImg);
         }
 
         public void setCountryName(String countryName) {

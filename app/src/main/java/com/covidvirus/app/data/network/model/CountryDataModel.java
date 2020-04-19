@@ -11,6 +11,10 @@ public class CountryDataModel implements Serializable {
     private String country;
 
     @Expose
+    @SerializedName("countryInfo")
+    private CountryInfo countryInfo;
+
+    @Expose
     @SerializedName("cases")
     private long nbrCases;
 
@@ -53,6 +57,14 @@ public class CountryDataModel implements Serializable {
         this.nbrRecovered = nbrRecovered;
         this.nbrActiveCases = nbrActiveCases;
         this.nbrCriticalCases = nbrCriticalCases;
+    }
+
+    public CountryInfo getCountryInfo() {
+        return countryInfo;
+    }
+
+    public void setCountryInfo(CountryInfo countryInfo) {
+        this.countryInfo = countryInfo;
     }
 
     public String getCountry() {

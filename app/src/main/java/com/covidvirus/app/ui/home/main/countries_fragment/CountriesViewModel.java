@@ -26,7 +26,6 @@ public class CountriesViewModel extends BaseViewModel {
     }
 
     MutableLiveData<List<CountryDataModel>> getCountriesData(){
-
         return mCountriesData;
     }
 

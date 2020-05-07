@@ -20,6 +20,9 @@ import com.covidvirus.app.R;
 import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.CountryDataModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -125,6 +128,7 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
         ((ProgressBar)dialogView.findViewById(R.id.progressBarDetail)).setVisibility(View.GONE);
     }
 
+
     private void cleanDialogView(View dialogView){
         Glide.with(this).load("").into((ImageView)dialogView.findViewById(R.id.flag_img));
         ((TextView)dialogView.findViewById(R.id.countryTitle)).setText("");
@@ -134,6 +138,14 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
         ((TextView)dialogView.findViewById(R.id.totalDeathValue)).setText("");
         ((TextView)dialogView.findViewById(R.id.todayDeathValue)).setText("");
         ((TextView)dialogView.findViewById(R.id.recoverValue)).setText("");
+
+        Date date = new Date();
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        //format() method Formats a Date into a date/time string.
+        String testDateString = df.format(date);
+        ((TextView)dialogView.findViewById(R.id.deathText)).setText("Deaths Today \n (" + testDateString + ")");
+
+
         ((ProgressBar)dialogView.findViewById(R.id.progressBarDetail)).setVisibility(View.VISIBLE);
     }
 

@@ -23,6 +23,12 @@ import butterknife.ButterKnife;
 
 import com.covidvirus.app.ui.base.BaseFragment;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.covidvirus.app.R.id.deathText;
+
 public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     private static final String TAG = "ProfileFragment";
     private ProfileViewModel viewModel;
@@ -111,6 +117,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
             setTotalDeathCases(String.valueOf(country.getNbrDeath()));
             setTodayDeathCases(String.valueOf(country.getTodayDeaths()));
             setRecoverCases(String.valueOf(country.getNbrRecovered()));
+            setTodayDeathdate();
 
             setProfileVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
@@ -144,6 +151,14 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     private void setTodayDeathCases(String deathCases) {
 
         ( (TextView) this.deathItem.findViewById(R.id.todayDeathValue)).setText(deathCases);
+    }
+
+    private void setTodayDeathdate() {
+        Date date = new Date();
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        //format() method Formats a Date into a date/time string.
+        String testDateString = df.format(date);
+        ( (TextView) this.deathItem.findViewById(R.id.deathText)).setText("Deaths today \n (" + testDateString + ")");
     }
 
     private void setRecoverCases(String recoverCases) {

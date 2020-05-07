@@ -37,18 +37,18 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <com.google.android.material.tabs.TabLayout
-                android:background="@drawable/bg_tabs"
-                app:tabTextColor="@color/colorHintText"
-                android:id="@+id/mainTabs"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:tabGravity="fill"
-                app:tabMode="fixed"
-                app:tabIndicatorColor="@color/colorAccent"
-                app:tabSelectedTextColor="@color/colorPrimary" />
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/mainTabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_tabs"
+                    app:tabGravity="fill"
+                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabMode="fixed"
+                    app:tabSelectedTextColor="@color/colorPrimary"
+                    app:tabTextColor="@color/colorHintText" />
 
-            <androidx.viewpager.widget.ViewPager
+                <androidx.viewpager.widget.ViewPager
                 android:background="@drawable/bg_pager"
                 android:id="@+id/mainPager"
                 android:layout_width="match_parent"

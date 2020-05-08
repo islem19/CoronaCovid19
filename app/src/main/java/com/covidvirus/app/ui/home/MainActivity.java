@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.covidvirus.app.R;
 import com.covidvirus.app.data.network.model.Location;
@@ -26,6 +27,9 @@ import com.covidvirus.app.ui.home.main.global_fragment.GlobalFragment;
 import com.covidvirus.app.ui.home.profile.ProfileFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +50,9 @@ public class MainActivity extends BaseActivity<MainViewModel> {
     private InterstitialAd mInterstitialAd;
 
 
+
+
+
     @Override
     public MainViewModel createViewModel() {
         MainViewModelFactory factory = new MainViewModelFactory(DataManager.getInstance().getLocationService());
@@ -64,10 +71,13 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         if (DataManager.getInstance().getDefaultCountry() == null) {
             viewModel.loadLocationData();
             viewModel.getLocationData().observe(this, new LocationDataObserver());
-        } else
+        } else {
             loadFragment(R.id.profileContainer, new ProfileFragment());
-        setMainPagerAdapter();
-        mainTabLayout.setupWithViewPager(mainPager, true);
+            setMainPagerAdapter();
+            mainTabLayout.setupWithViewPager(mainPager, true);
+        }
+
+
     }
 
     private void initAdMob(){
@@ -123,6 +133,7 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         titles.add(this.getResources().getString(R.string.countries_fragment));
         mainAdapter.addTitles(titles);
         mainPager.setAdapter(mainAdapter);
+
     }
 
     private void loadFragment(int viewId, Fragment fragment) {
@@ -134,6 +145,16 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         }
     }
 
+    private void changeText()
+    {
+        Date date = new Date();
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        //format() method Formats a Date into a date/time string.
+        String testDateString = df.format(date);
+        TextView textView = (TextView) findViewById(R.id.deathText);
+        textView.setText("AAA");
+    }
+
     private class LocationDataObserver implements Observer<Location> {
         @Override
         public void onChanged(Location location) {
@@ -143,5 +164,7 @@ public class MainActivity extends BaseActivity<MainViewModel> {
             loadFragment(R.id.profileContainer, new ProfileFragment());
         }
     }
+
+
 
 }

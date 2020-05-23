@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -18,16 +20,15 @@ import com.bumptech.glide.Glide;
 import com.covidvirus.app.R;
 import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.CountryDataModel;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import com.covidvirus.app.ui.base.BaseFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.covidvirus.app.R.id.deathText;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     private static final String TAG = "ProfileFragment";
@@ -46,6 +47,8 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     LinearLayout recoverItem;
     @BindView(R.id.flag_img)
     ImageView flag_img;
+    @BindView(R.id.error_layout)
+    ConstraintLayout errorLayout;
 
 
     public ProfileFragment() {
@@ -86,6 +89,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
 
     private void showProfile() {
         viewModel.getCountryData().observe(this, new CountryDataObserver());
+        viewModel.getIsError().observe(this, new ErrorObserver());
         viewModel.loadCountryData(DataManager.getInstance().getDefaultCountry());
     }
 
@@ -96,12 +100,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
         alertDialog.setView(dialogView);
         alertDialog.show();
 
-        dialogView.findViewById(R.id.aboutCancelBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });
+        dialogView.findViewById(R.id.aboutCancelBtn).setOnClickListener(view -> alertDialog.dismiss());
 
     }
 
@@ -121,6 +120,19 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
 
             setProfileVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private class ErrorObserver implements Observer<Boolean> {
+        @Override
+        public void onChanged(Boolean isError) {
+            if (isError){
+                errorLayout.setVisibility(View.VISIBLE);
+                setProfileVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+            } else {
+                errorLayout.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -162,19 +174,23 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
     }
 
     private void setRecoverCases(String recoverCases) {
-
         ( (TextView) this.recoverItem.findViewById(R.id.recoverValue)).setText(recoverCases);
     }
 
 
     private class AboutListener implements View.OnClickListener{
-
         @Override
         public void onClick(View view) {
             Log.d(TAG, "onClick: about");
             showAboutDialog();
 
         }
+    }
+
+    @OnClick(R.id.text_error)
+    protected void loadProfile(){
+        Log.e(TAG, "loadProfile: " );
+        viewModel.loadCountryData(DataManager.getInstance().getDefaultCountry());
     }
 
 }

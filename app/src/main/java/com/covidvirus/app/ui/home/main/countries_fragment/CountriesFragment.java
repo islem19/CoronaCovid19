@@ -2,14 +2,15 @@ package com.covidvirus.app.ui.home.main.countries_fragment;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,22 +20,21 @@ import com.bumptech.glide.Glide;
 import com.covidvirus.app.R;
 import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.CountryDataModel;
+import com.covidvirus.app.ui.base.BaseFragment;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-
-import com.covidvirus.app.ui.base.BaseFragment;
+import butterknife.OnClick;
 
 public class CountriesFragment extends BaseFragment<CountriesViewModel> {
     private static final String TAG = "CountriesFragment";
     private CountriesViewModel viewModel;
     @BindView(R.id.country_recyclerview)
     RecyclerView mRecyclerView;
+    @BindView(R.id.error_layout)
+    ConstraintLayout errorLayout;
     private RecyclerAdapter recyclerAdapter;
 
     public CountriesFragment() {
@@ -75,6 +75,7 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
 
     private void showCountries() {
         viewModel.getCountriesData().observe(this, new CountriesDataObserver());
+        viewModel.getIsError().observe(this, new ErrorObserver());
         viewModel.loadCountriesData();
     }
 
@@ -86,8 +87,21 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
         }
     }
 
-    private class ItemOnClick implements View.OnClickListener{
+    private class ErrorObserver implements Observer<Boolean> {
 
+        @Override
+        public void onChanged(Boolean isError) {
+            if (isError){
+                errorLayout.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+            } else{
+                errorLayout.setVisibility(View.GONE);
+                mRecyclerView.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private class ItemOnClick implements View.OnClickListener{
         @Override
         public void onClick(View view) {
             int itemPosition = mRecyclerView.getChildLayoutPosition(view);
@@ -106,6 +120,9 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
         viewModel.loadCountryData(country);
 
         viewModel.getCountryData().observe(this, countryDataModel -> setupDialogView(dialogView, countryDataModel ));
+        viewModel.getIsError().observe(this, isError -> {
+            if(isError) erroDialogView(dialogView);
+        });
 
         dialogView.findViewById(R.id.aboutCancelBtn).setOnClickListener(view -> {
             alertDialog.cancel();
@@ -117,6 +134,10 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
 
     private void setupDialogView(View dialogView, CountryDataModel country){
         if (country == null) return;
+        dialogView.findViewById(R.id.linearLayout).setVisibility(View.VISIBLE);
+        dialogView.findViewById(R.id.progressBarDetail).setVisibility(View.GONE);
+        dialogView.findViewById(R.id.error_layout).setVisibility(View.GONE);
+
         Glide.with(this).load(country.getCountryInfo().getFlag()).into((ImageView)dialogView.findViewById(R.id.flag_img));
         ((TextView)dialogView.findViewById(R.id.countryTitle)).setText(country.getCountry());
         ((TextView)dialogView.findViewById(R.id.totalCaseValue)).setText(String.valueOf(country.getNbrCases()));
@@ -125,28 +146,25 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
         ((TextView)dialogView.findViewById(R.id.totalDeathValue)).setText(String.valueOf(country.getNbrDeath()));
         ((TextView)dialogView.findViewById(R.id.todayDeathValue)).setText(String.valueOf(country.getTodayDeaths()));
         ((TextView)dialogView.findViewById(R.id.recoverValue)).setText(String.valueOf(country.getNbrRecovered()));
-        ((ProgressBar)dialogView.findViewById(R.id.progressBarDetail)).setVisibility(View.GONE);
     }
 
 
     private void cleanDialogView(View dialogView){
-        Glide.with(this).load("").into((ImageView)dialogView.findViewById(R.id.flag_img));
-        ((TextView)dialogView.findViewById(R.id.countryTitle)).setText("");
-        ((TextView)dialogView.findViewById(R.id.totalCaseValue)).setText("");
-        ((TextView)dialogView.findViewById(R.id.activeCaseValue)).setText("");
-        ((TextView)dialogView.findViewById(R.id.todayCaseValue)).setText("");
-        ((TextView)dialogView.findViewById(R.id.totalDeathValue)).setText("");
-        ((TextView)dialogView.findViewById(R.id.todayDeathValue)).setText("");
-        ((TextView)dialogView.findViewById(R.id.recoverValue)).setText("");
+        dialogView.findViewById(R.id.error_layout).setVisibility(View.GONE);
+        dialogView.findViewById(R.id.linearLayout).setVisibility(View.GONE);
+        dialogView.findViewById(R.id.progressBarDetail).setVisibility(View.VISIBLE);
+    }
 
-        Date date = new Date();
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        //format() method Formats a Date into a date/time string.
-        String testDateString = df.format(date);
-        ((TextView)dialogView.findViewById(R.id.deathText)).setText("Deaths Today \n (" + testDateString + ")");
+    private void erroDialogView(View dialogView) {
+        dialogView.findViewById(R.id.linearLayout).setVisibility(View.GONE);
+        dialogView.findViewById(R.id.progressBarDetail).setVisibility(View.GONE);
+        dialogView.findViewById(R.id.error_layout).setVisibility(View.VISIBLE);
+    }
 
-
-        ((ProgressBar)dialogView.findViewById(R.id.progressBarDetail)).setVisibility(View.VISIBLE);
+    @OnClick(R.id.text_error)
+    protected void loadProfile(){
+        Log.e(TAG, "loadProfile: " );
+        viewModel.loadCountriesData();
     }
 
 

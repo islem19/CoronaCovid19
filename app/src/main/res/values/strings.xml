@@ -10,6 +10,7 @@
     <string name="countries_fragment">Cases By Country</string>
     <string name="default_country">Algeria</string>
     <string name="details">Details</string>
+    <string name="no_internet" >You\'re offline ! Try again</string>
 
 
     <!-- About section-->

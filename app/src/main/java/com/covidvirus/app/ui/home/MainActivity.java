@@ -1,38 +1,36 @@
 package com.covidvirus.app.ui.home;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
 import com.covidvirus.app.R;
+import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.Location;
+import com.covidvirus.app.ui.base.BaseActivity;
+import com.covidvirus.app.ui.home.main.countries_fragment.CountriesFragment;
+import com.covidvirus.app.ui.home.main.global_fragment.GlobalFragment;
+import com.covidvirus.app.ui.home.profile.ProfileFragment;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.tabs.TabLayout;
-import com.covidvirus.app.data.DataManager;
-import com.covidvirus.app.ui.base.BaseActivity;
-import com.covidvirus.app.ui.home.main.countries_fragment.CountriesFragment;
-import com.covidvirus.app.ui.home.main.global_fragment.GlobalFragment;
-import com.covidvirus.app.ui.home.profile.ProfileFragment;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static android.view.View.GONE;
 
 
 public class MainActivity extends BaseActivity<MainViewModel> {
@@ -45,13 +43,11 @@ public class MainActivity extends BaseActivity<MainViewModel> {
     ViewPager mainPager;
     @BindView(R.id.mainTabs)
     TabLayout mainTabLayout;
+    @BindView(R.id.error_layout)
+    ConstraintLayout errorLayout;
     private MainPagerAdapter mainAdapter;
     private MainViewModel viewModel;
     private InterstitialAd mInterstitialAd;
-
-
-
-
 
     @Override
     public MainViewModel createViewModel() {
@@ -67,24 +63,20 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         ButterKnife.bind(this);
         initAdMob();
         DataManager.getInstance().setRunCount();
-        Log.d(TAG, "onCreate: count"+DataManager.getInstance().getRunCount());
+        setMainPagerAdapter();
+        mainTabLayout.setupWithViewPager(mainPager, true);
+        viewModel.getLocationData().observe(this, new LocationDataObserver());
+        viewModel.getIsError().observe(this, new ErrorObserver());
+
         if (DataManager.getInstance().getDefaultCountry() == null) {
             viewModel.loadLocationData();
-            viewModel.getLocationData().observe(this, new LocationDataObserver());
         } else {
             loadFragment(R.id.profileContainer, new ProfileFragment());
-            setMainPagerAdapter();
-            mainTabLayout.setupWithViewPager(mainPager, true);
         }
-
-
     }
 
     private void initAdMob(){
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
+        MobileAds.initialize(this, initializationStatus -> {
         });
 
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -98,10 +90,10 @@ public class MainActivity extends BaseActivity<MainViewModel> {
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 Log.e(TAG, "onAdFailedToLoad: " + errorCode);
-                bannerView.setVisibility(View.GONE);
+                bannerView.setVisibility(GONE);
             }
         });
-        if(!bannerView.isLoading()) bannerView.setVisibility(View.GONE);
+        if(!bannerView.isLoading()) bannerView.setVisibility(GONE);
 
         if( DataManager.getInstance().getRunCount() == DataManager.MAX_COUNT) {
             mInterstitialAd = new InterstitialAd(this);
@@ -145,24 +137,32 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         }
     }
 
-    private void changeText()
-    {
-        Date date = new Date();
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        //format() method Formats a Date into a date/time string.
-        String testDateString = df.format(date);
-        TextView textView = (TextView) findViewById(R.id.deathText);
-        textView.setText("AAA");
-    }
 
     private class LocationDataObserver implements Observer<Location> {
         @Override
         public void onChanged(Location location) {
             if (location == null) return;
-            Log.d(TAG, "onChanged: location " + location.getCountry());
+            errorLayout.setVisibility(GONE);
             DataManager.getInstance().setDefaultCountry(location.getCountry());
             loadFragment(R.id.profileContainer, new ProfileFragment());
         }
+    }
+
+    private class ErrorObserver implements Observer<Boolean> {
+        @Override
+        public void onChanged(Boolean isError) {
+            if (isError) {
+                errorLayout.setVisibility(View.VISIBLE);
+            } else {
+                errorLayout.setVisibility(GONE);
+            }
+        }
+    }
+
+    @OnClick(R.id.text_error)
+    protected void loadProfile(){
+        Log.e(TAG, "loadProfile: " );
+        viewModel.loadLocationData();
     }
 
 

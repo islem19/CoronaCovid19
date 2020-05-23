@@ -1,28 +1,25 @@
 package com.covidvirus.app.ui.home.profile;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.covidvirus.app.data.network.model.CountryDataModel;
 import com.covidvirus.app.data.network.services.DataService;
 import com.covidvirus.app.ui.base.BaseViewModel;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class ProfileViewModel extends BaseViewModel {
 
     private static final String TAG = "MainViewModel";
     private DataService mDataService;
-    private MutableLiveData<CountryDataModel> mCountryData;
+    private MutableLiveData<CountryDataModel> mCountryData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isError = new MutableLiveData<>();
 
 
     ProfileViewModel(DataService mDataService){
         this.mDataService = mDataService;
-        mCountryData = new MutableLiveData<>();
     }
 
 
@@ -30,27 +27,31 @@ public class ProfileViewModel extends BaseViewModel {
         return mCountryData;
     }
 
+    MutableLiveData<Boolean> getIsError(){
+        return isError;
+    }
 
-    void loadCountryData(String country){
-        mDataService.getDataApi().getDataByCountry(country).enqueue(new CountryDataCallback());
+    void loadCountryData(String country) {
+        mDataService.getDataApi().getDataByCountry(country).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<CountryDataModel>() {
+                    @Override
+                    public void onSuccess(CountryDataModel countryDataModel) {
+                        if (countryDataModel != null ) {
+                            setCountryData(countryDataModel);
+                            isError.postValue(false);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                            isError.postValue(true);
+                    }
+                });
     }
 
     private void setCountryData(CountryDataModel mCountryData){
         this.mCountryData.postValue(mCountryData);
-    }
-
-
-    private class CountryDataCallback implements Callback<CountryDataModel> {
-        @Override
-        public void onResponse(@NonNull Call<CountryDataModel> call, @NonNull Response<CountryDataModel> response) {
-
-            if (response.body() != null)
-                setCountryData(response.body());
-        }
-        @Override
-        public void onFailure(Call<CountryDataModel> call, Throwable t) {
-            Log.e(TAG, "onFailure: "+ t );
-        }
     }
 }
 

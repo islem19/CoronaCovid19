@@ -56,12 +56,14 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:layout_width="120dp"
-            android:layout_height="20dp"
+            android:id="@+id/deathText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textColor="@color/colorHintTextDark"
-            android:textStyle="italic"
             android:textSize="12sp"
-            android:text="@string/today_death_title"/>
+            android:textStyle="italic" />
+           <!-- android:text="@string/today_death_title" -->
+
 
     </LinearLayout>
 

@@ -10,6 +10,7 @@
     <string name="countries_fragment">État des pays</string>
     <string name="default_country">Algérie</string>
     <string name="details">Détails</string>
+    <string name="no_internet">vous êtes hors ligne! Réessayez</string>
 
     <!-- About section-->
     <string name="about">à propos</string>

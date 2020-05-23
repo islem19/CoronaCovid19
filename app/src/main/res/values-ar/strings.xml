@@ -10,6 +10,8 @@
     <string name="countries_fragment">الحالات في الدول الاخرى</string>
     <string name="default_country">الجزائر</string>
     <string name="details">تفاصيل</string>
+    <string name="no_internet">لا يوجد انترنت! حاول مجددا</string>
+
 
     <!-- About section-->
     <string name="about">حول</string>

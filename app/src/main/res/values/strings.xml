@@ -2,18 +2,20 @@
     <string name="app_name" translatable="false">Covid-19</string>
     <string name="total_cases_title">Total cases</string>
     <string name="active_cases_title">Active cases</string>
-    <string name="today_cases_title">Today cases</string>
+    <string name="today_cases_title">Todays cases</string>
     <string name="total_death_title">Total deaths</string>
-    <string name="today_death_title">Today deaths</string>
-    <string name="total_recover_title">Total recovers</string>
-    <string name="global_fragment">Global State</string>
-    <string name="countries_fragment">Countries State</string>
+    <string name="today_death_title">Todays death count</string>
+    <string name="total_recover_title">Total recoveries</string>
+    <string name="global_fragment">Global Cases</string>
+    <string name="countries_fragment">Cases By Country</string>
     <string name="default_country">Algeria</string>
     <string name="details">Details</string>
+    <string name="no_internet" >You\'re offline ! Try again</string>
+
 
     <!-- About section-->
     <string name="about">About</string>
-    <string name="version" translatable="false">v1.0.2</string>
+    <string name="version" translatable="false">v1.0.4</string>
     <string name="developed">Developed By</string>
     <string name="first_dev">Abdelkader SELLAMI (sellislem@gmail.com)</string>
     <string name="second_dev">Billel BOUMESSAIDIA (billel.bmsd@gmail.com)</string>

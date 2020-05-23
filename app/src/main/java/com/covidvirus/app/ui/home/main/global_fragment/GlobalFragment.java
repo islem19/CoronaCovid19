@@ -1,20 +1,25 @@
 package com.covidvirus.app.ui.home.main.global_fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
 import com.covidvirus.app.R;
 import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.GlobalDataModel;
+import com.covidvirus.app.ui.base.BaseFragment;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.covidvirus.app.ui.base.BaseFragment;
+import butterknife.OnClick;
 
 
 public class GlobalFragment extends BaseFragment<GlobalViewModel> {
@@ -26,6 +31,10 @@ public class GlobalFragment extends BaseFragment<GlobalViewModel> {
     TextView deathCases;
     @BindView(R.id.recoverValue)
     TextView recoverCases;
+    @BindView(R.id.error_layout)
+    ConstraintLayout errorLayout;
+    @BindView(R.id.global_data_layout)
+    ConstraintLayout globalLayout;
 
     public GlobalFragment() {
     }
@@ -55,6 +64,7 @@ public class GlobalFragment extends BaseFragment<GlobalViewModel> {
 
     private void showGlobal() {
         viewModel.getGlobalData().observe(this,new GlobalDataObserver());
+        viewModel.getIsError().observe(this,new ErrorObserver());
         viewModel.loadGlobalData();
     }
 
@@ -68,6 +78,21 @@ public class GlobalFragment extends BaseFragment<GlobalViewModel> {
         }
     }
 
+    private class ErrorObserver implements Observer<Boolean> {
+
+        @Override
+        public void onChanged(Boolean isError) {
+            if(isError){
+                errorLayout.setVisibility(View.VISIBLE);
+                globalLayout.setVisibility(View.GONE);
+
+            }else {
+                errorLayout.setVisibility(View.GONE);
+                globalLayout.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     private void setTotalCases(String totalCases) {
         this.totalCases.setText(totalCases);
     }
@@ -78,6 +103,12 @@ public class GlobalFragment extends BaseFragment<GlobalViewModel> {
 
     private void setRecoverCases(String recoverCases) {
         this.recoverCases.setText(recoverCases);
+    }
+
+    @OnClick(R.id.text_error)
+    protected void loadProfile(){
+        Log.e(TAG, "loadProfile: " );
+        viewModel.loadGlobalData();
     }
 
 }

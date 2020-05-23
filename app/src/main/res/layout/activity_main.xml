@@ -19,8 +19,16 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:minHeight="220dp"
-        android:padding="5dp"
-        />
+        android:padding="5dp">
+
+        <include
+            android:id="@+id/error_layout"
+            layout="@layout/error_layout"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/mainContainer"

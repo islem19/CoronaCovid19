@@ -1,6 +1,7 @@
 package com.covidvirus.app.data.network.services.location;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LocationService {
@@ -16,6 +17,7 @@ public class LocationService {
     private LocationService(){
         Retrofit mRetrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();
         mLocationApi = mRetrofit.create(LocationApi.class);

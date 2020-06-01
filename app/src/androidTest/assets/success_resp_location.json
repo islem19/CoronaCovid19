@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "country": "Algeria",
+  "countryCode": "DZ",
+  "region": "16",
+  "regionName": "Algiers",
+  "city": "Belcourt",
+  "zip": "16015",
+  "lat": 36.7538,
+  "lon": 3.05876,
+  "timezone": "Africa/Algiers",
+  "isp": "Wataniya Telecom Algerie",
+  "org": "",
+  "as": "AS33779 Wataniya Telecom Algerie",
+  "query": "105.235.132.124"
+}

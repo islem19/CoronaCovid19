@@ -41,7 +41,7 @@ public class GlobalFragment extends BaseFragment<GlobalViewModel> {
 
     @Override
     public GlobalViewModel getViewModel() {
-        GlobalViewModelFactory factory = new GlobalViewModelFactory(DataManager.getInstance().getDataService());
+        GlobalViewModelFactory factory = new GlobalViewModelFactory(DataManager.getInstance());
         return ViewModelProviders.of(this,factory).get(GlobalViewModel.class);
     }
 

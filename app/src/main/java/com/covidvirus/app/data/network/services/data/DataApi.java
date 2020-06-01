@@ -1,4 +1,4 @@
-package com.covidvirus.app.data.network.services;
+package com.covidvirus.app.data.network.services.data;
 
 import com.covidvirus.app.data.network.model.CountryDataModel;
 import com.covidvirus.app.data.network.model.GlobalDataModel;

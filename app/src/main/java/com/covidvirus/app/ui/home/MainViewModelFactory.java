@@ -3,14 +3,15 @@ package com.covidvirus.app.ui.home;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import com.covidvirus.app.data.network.services.location.LocationService;
+
+import com.covidvirus.app.data.DataManager;
 
 public class MainViewModelFactory implements ViewModelProvider.Factory {
 
-    private final LocationService locationService;
+    private final DataManager dataManager;
 
-    public MainViewModelFactory(LocationService locationService){
-        this.locationService = locationService;
+    public MainViewModelFactory(DataManager dataManager){
+        this.dataManager = dataManager;
     }
 
 
@@ -18,7 +19,7 @@ public class MainViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MainViewModel.class)) {
-            return (T) new MainViewModel(locationService);
+            return (T) new MainViewModel(dataManager);
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class");

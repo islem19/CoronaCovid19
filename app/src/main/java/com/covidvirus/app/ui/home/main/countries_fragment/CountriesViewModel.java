@@ -2,8 +2,8 @@ package com.covidvirus.app.ui.home.main.countries_fragment;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.CountryDataModel;
-import com.covidvirus.app.data.network.services.DataService;
 import com.covidvirus.app.ui.base.BaseViewModel;
 
 import java.util.List;
@@ -15,14 +15,14 @@ import io.reactivex.schedulers.Schedulers;
 public class CountriesViewModel extends BaseViewModel {
 
     private static final String TAG = "MainViewModel";
-    private DataService mDataService;
+    private DataManager dataManager;
     private MutableLiveData<List<CountryDataModel>> mCountriesData = new MutableLiveData<>();
     private MutableLiveData<CountryDataModel> mCountryData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isError = new MutableLiveData<>();
 
 
-    CountriesViewModel(DataService mDataService){
-        this.mDataService = mDataService;
+    CountriesViewModel(DataManager dataManager){
+        this.dataManager = dataManager;
     }
 
     MutableLiveData<List<CountryDataModel>> getCountriesData(){
@@ -36,7 +36,7 @@ public class CountriesViewModel extends BaseViewModel {
     MutableLiveData<Boolean> getIsError() { return isError; }
 
     void loadCountryData(String country){
-        mDataService.getDataApi().getDataByCountry(country)
+        dataManager.getDataByCountry(country)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<CountryDataModel>() {
@@ -56,7 +56,7 @@ public class CountriesViewModel extends BaseViewModel {
     }
 
     void loadCountriesData(){
-        mDataService.getDataApi().getAllData()
+        dataManager.getAllData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<List<CountryDataModel>>() {

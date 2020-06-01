@@ -3,8 +3,8 @@ package com.covidvirus.app.ui.home;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.Location;
-import com.covidvirus.app.data.network.services.location.LocationService;
 import com.covidvirus.app.ui.base.BaseViewModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,11 +17,11 @@ public class MainViewModel extends BaseViewModel {
     private static final String TAG = "MainViewModel";
     private MutableLiveData<Location> location = new MutableLiveData<>();
     private MutableLiveData<Boolean> isError = new MutableLiveData<>();
-    private LocationService locationService;
+    private DataManager dataManager;
 
 
-    MainViewModel(LocationService mDataService){
-        this.locationService = mDataService;
+    MainViewModel(DataManager dataManager){
+        this.dataManager = dataManager;
     }
 
     MutableLiveData<Location> getLocationData(){
@@ -34,7 +34,7 @@ public class MainViewModel extends BaseViewModel {
 
 
     void loadLocationData(){
-        locationService.getLocationApi().getLocationData()
+        dataManager.getLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<Location>() {

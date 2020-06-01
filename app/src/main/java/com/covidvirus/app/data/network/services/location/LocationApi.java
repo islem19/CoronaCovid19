@@ -8,7 +8,7 @@ import retrofit2.http.GET;
 public interface LocationApi {
 
     @GET("/json")
-    Single<Location> getLocationData();
+    Single<Location> getLocation();
 
 
 }

@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity<MainViewModel> {
 
     @Override
     public MainViewModel createViewModel() {
-        MainViewModelFactory factory = new MainViewModelFactory(DataManager.getInstance().getLocationService());
+        MainViewModelFactory factory = new MainViewModelFactory(DataManager.getInstance());
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
         return viewModel;
     }

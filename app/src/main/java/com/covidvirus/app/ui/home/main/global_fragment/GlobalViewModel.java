@@ -2,8 +2,8 @@ package com.covidvirus.app.ui.home.main.global_fragment;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.covidvirus.app.data.DataManager;
 import com.covidvirus.app.data.network.model.GlobalDataModel;
-import com.covidvirus.app.data.network.services.DataService;
 import com.covidvirus.app.ui.base.BaseViewModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -13,12 +13,12 @@ import io.reactivex.schedulers.Schedulers;
 public class GlobalViewModel extends BaseViewModel {
 
     private static final String TAG = "GlobalFragmentViewModel";
-    private DataService mDataService;
+    private DataManager dataManager;
     private MutableLiveData<GlobalDataModel> mGlobalData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isError = new MutableLiveData<>();
 
-    GlobalViewModel(DataService mDataService){
-        this.mDataService = mDataService;
+    GlobalViewModel(DataManager dataManager){
+        this.dataManager = dataManager;
     }
 
 
@@ -32,7 +32,7 @@ public class GlobalViewModel extends BaseViewModel {
 
 
     void loadGlobalData(){
-        mDataService.getDataApi().getGlobalData()
+        dataManager.getGlobalData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<GlobalDataModel>() {

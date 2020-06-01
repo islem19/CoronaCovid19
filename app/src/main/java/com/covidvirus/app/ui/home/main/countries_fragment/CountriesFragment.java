@@ -42,7 +42,7 @@ public class CountriesFragment extends BaseFragment<CountriesViewModel> {
 
     @Override
     public CountriesViewModel getViewModel() {
-        CountriesViewModelFactory factory = new CountriesViewModelFactory(DataManager.getInstance().getDataService());
+        CountriesViewModelFactory factory = new CountriesViewModelFactory(DataManager.getInstance());
         return ViewModelProviders.of(this, factory).get(CountriesViewModel.class);
     }
 

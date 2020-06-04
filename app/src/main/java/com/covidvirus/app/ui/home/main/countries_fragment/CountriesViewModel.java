@@ -9,7 +9,7 @@ import com.covidvirus.app.ui.base.BaseViewModel;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class CountriesViewModel extends BaseViewModel {
@@ -19,6 +19,7 @@ public class CountriesViewModel extends BaseViewModel {
     private MutableLiveData<List<CountryDataModel>> mCountriesData = new MutableLiveData<>();
     private MutableLiveData<CountryDataModel> mCountryData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isError = new MutableLiveData<>();
+    private CompositeDisposable disposable = new CompositeDisposable();
 
 
     CountriesViewModel(DataManager dataManager){
@@ -36,43 +37,34 @@ public class CountriesViewModel extends BaseViewModel {
     MutableLiveData<Boolean> getIsError() { return isError; }
 
     void loadCountryData(String country){
-        dataManager.getDataByCountry(country)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<CountryDataModel>() {
-                    @Override
-                    public void onSuccess(CountryDataModel countryDataModel) {
-                        if( countryDataModel != null ) {
-                            setCountryData(countryDataModel);
-                            isError.postValue(false);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        isError.postValue(true);
-                    }
-                });
+        disposable.add(
+                dataManager.getDataByCountry(country)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                countryDataModel -> {
+                                    if (countryDataModel != null ) {
+                                        setCountryData(countryDataModel);
+                                        isError.postValue(false);
+                                    }
+                                    }, error -> isError.postValue(true)
+                        )
+        );
     }
 
     void loadCountriesData(){
-        dataManager.getAllData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<List<CountryDataModel>>() {
-                    @Override
-                    public void onSuccess(List<CountryDataModel> countryDataModels) {
-                        if (countryDataModels != null ) {
-                            setCountriesData(countryDataModels);
-                            isError.postValue(false);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        isError.postValue(true);
-                    }
-                });
+        disposable.add(
+                dataManager.getAllData()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe( countryDataModels -> {
+                            if (countryDataModels != null ){
+                                setCountriesData(countryDataModels);
+                                isError.postValue(false);
+                            }
+                        }, error -> isError.postValue(true)
+                        )
+        );
     }
 
     private void setCountriesData(List<CountryDataModel> mCountriesData){

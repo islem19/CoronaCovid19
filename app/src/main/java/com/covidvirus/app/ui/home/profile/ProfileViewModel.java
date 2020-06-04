@@ -7,7 +7,7 @@ import com.covidvirus.app.data.network.model.CountryDataModel;
 import com.covidvirus.app.ui.base.BaseViewModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ProfileViewModel extends BaseViewModel {
@@ -16,6 +16,7 @@ public class ProfileViewModel extends BaseViewModel {
     private DataManager dataManager;
     private MutableLiveData<CountryDataModel> mCountryData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isError = new MutableLiveData<>();
+    private Disposable disposable;
 
 
     ProfileViewModel(DataManager dataManager){
@@ -32,23 +33,18 @@ public class ProfileViewModel extends BaseViewModel {
     }
 
     void loadCountryData(String country) {
-        dataManager.getDataByCountry(country)
+        disposable = dataManager.getDataByCountry(country)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<CountryDataModel>() {
-                    @Override
-                    public void onSuccess(CountryDataModel countryDataModel) {
-                        if (countryDataModel != null ) {
-                            setCountryData(countryDataModel);
-                            isError.postValue(false);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                            isError.postValue(true);
-                    }
-                });
+                .subscribe(
+                        countryDataModel -> {
+                            if (countryDataModel != null ) {
+                                setCountryData(countryDataModel);
+                                isError.postValue(false);
+                            }
+                            },
+                        error -> isError.postValue(true)
+                );
     }
 
     private void setCountryData(CountryDataModel mCountryData){

@@ -8,23 +8,24 @@ import com.covidvirus.app.data.network.model.Location;
 import com.covidvirus.app.ui.base.BaseViewModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
 public class MainViewModel extends BaseViewModel {
 
     private static final String TAG = "MainViewModel";
-    private MutableLiveData<Location> location = new MutableLiveData<>();
+    private MutableLiveData<String> location = new MutableLiveData<>();
     private MutableLiveData<Boolean> isError = new MutableLiveData<>();
     private DataManager dataManager;
+    private Disposable disposable;
 
 
     MainViewModel(DataManager dataManager){
         this.dataManager = dataManager;
     }
 
-    MutableLiveData<Location> getLocationData(){
+    MutableLiveData<String> getLocationData(){
         return location;
     }
 
@@ -34,28 +35,23 @@ public class MainViewModel extends BaseViewModel {
 
 
     void loadLocationData(){
-        dataManager.getLocation()
+        disposable = dataManager.getLocation()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null ) {
-                            setLocationData(location);
-                            isError.postValue(false);
-                        }
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        isError.postValue(true);
-                    }
-                });
+                .map(Location::getCountry)
+                .subscribe( country -> {
+                    setLocationData(country);
+                    isError.postValue(false);
+                }, error -> isError.postValue(true));
     }
 
-    private void setLocationData(Location location){
-        this.location.postValue(location);
+    private void setLocationData(String country){
+        this.location.postValue(country);
     }
 
+    public void onClear(){
+        if (disposable != null ) disposable.dispose();
+    }
 
 }
 

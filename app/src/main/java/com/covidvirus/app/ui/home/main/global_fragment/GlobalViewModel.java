@@ -7,7 +7,7 @@ import com.covidvirus.app.data.network.model.GlobalDataModel;
 import com.covidvirus.app.ui.base.BaseViewModel;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class GlobalViewModel extends BaseViewModel {
@@ -16,6 +16,7 @@ public class GlobalViewModel extends BaseViewModel {
     private DataManager dataManager;
     private MutableLiveData<GlobalDataModel> mGlobalData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isError = new MutableLiveData<>();
+    private Disposable disposable;
 
     GlobalViewModel(DataManager dataManager){
         this.dataManager = dataManager;
@@ -32,23 +33,17 @@ public class GlobalViewModel extends BaseViewModel {
 
 
     void loadGlobalData(){
-        dataManager.getGlobalData()
+        disposable = dataManager.getGlobalData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<GlobalDataModel>() {
-                    @Override
-                    public void onSuccess(GlobalDataModel globalDataModel) {
-                        if (globalDataModel != null ){
-                            setGlobalData(globalDataModel);
-                            isError.postValue(false);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        isError.postValue(true);
-                    }
-                });
+                .subscribe(
+                        globalDataModel -> {
+                            if(globalDataModel != null ) {
+                                setGlobalData(globalDataModel);
+                                isError.postValue(false);
+                            }
+                            }, error -> isError.postValue(true)
+                );
     }
 
     private void setGlobalData(GlobalDataModel mGlobalData){

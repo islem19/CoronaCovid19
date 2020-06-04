@@ -4,14 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.covidvirus.app.data.network.services.DataService;
+import com.covidvirus.app.data.DataManager;
+import com.covidvirus.app.data.network.services.data.DataService;
 
 public class GlobalViewModelFactory implements ViewModelProvider.Factory {
 
-    private final DataService mDataService;
+    private final DataManager dataManager;
 
-    public GlobalViewModelFactory(DataService mDataService){
-        this.mDataService = mDataService;
+    public GlobalViewModelFactory(DataManager dataManager){
+        this.dataManager = dataManager;
     }
 
 
@@ -19,7 +20,7 @@ public class GlobalViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(GlobalViewModel.class)) {
-            return (T) new GlobalViewModel(mDataService);
+            return (T) new GlobalViewModel(dataManager);
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class");

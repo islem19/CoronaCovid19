@@ -1,5 +1,8 @@
 package com.covidvirus.app.data.network.services.location;
 
+import com.covidvirus.app.data.network.model.Location;
+
+import io.reactivex.Single;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -11,7 +14,7 @@ public class LocationService {
     private static LocationService mInstance;
 
     public static LocationService getInstance(){
-        return mInstance == null ? new LocationService() : mInstance;
+        return mInstance == null ? mInstance = new LocationService() : mInstance;
     }
 
     private LocationService(){
@@ -23,7 +26,7 @@ public class LocationService {
         mLocationApi = mRetrofit.create(LocationApi.class);
     }
 
-    public LocationApi getLocationApi(){
-        return mLocationApi;
+    public Single<Location> getLocation() {
+        return mLocationApi.getLocation();
     }
 }

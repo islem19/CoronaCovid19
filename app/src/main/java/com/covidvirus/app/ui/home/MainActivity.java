@@ -12,7 +12,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.covidvirus.app.R;
 import com.covidvirus.app.data.DataManager;
-import com.covidvirus.app.data.network.model.Location;
 import com.covidvirus.app.ui.base.BaseActivity;
 import com.covidvirus.app.ui.home.main.countries_fragment.CountriesFragment;
 import com.covidvirus.app.ui.home.main.global_fragment.GlobalFragment;
@@ -51,7 +50,7 @@ public class MainActivity extends BaseActivity<MainViewModel> {
 
     @Override
     public MainViewModel createViewModel() {
-        MainViewModelFactory factory = new MainViewModelFactory(DataManager.getInstance().getLocationService());
+        MainViewModelFactory factory = new MainViewModelFactory(DataManager.getInstance());
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
         return viewModel;
     }
@@ -138,13 +137,14 @@ public class MainActivity extends BaseActivity<MainViewModel> {
     }
 
 
-    private class LocationDataObserver implements Observer<Location> {
+    private class LocationDataObserver implements Observer<String> {
         @Override
-        public void onChanged(Location location) {
-            if (location == null) return;
+        public void onChanged(String country) {
+            if (country == null) return;
             errorLayout.setVisibility(GONE);
-            DataManager.getInstance().setDefaultCountry(location.getCountry());
+            DataManager.getInstance().setDefaultCountry(country);
             loadFragment(R.id.profileContainer, new ProfileFragment());
+            viewModel.onClear();
         }
     }
 
@@ -164,7 +164,5 @@ public class MainActivity extends BaseActivity<MainViewModel> {
         Log.e(TAG, "loadProfile: " );
         viewModel.loadLocationData();
     }
-
-
 
 }

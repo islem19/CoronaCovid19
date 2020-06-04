@@ -56,7 +56,7 @@ public class ProfileFragment extends BaseFragment<ProfileViewModel> {
 
     @Override
     public ProfileViewModel getViewModel() {
-        ProfileViewModelFactory factory = new ProfileViewModelFactory(DataManager.getInstance().getDataService());
+        ProfileViewModelFactory factory = new ProfileViewModelFactory(DataManager.getInstance());
         return ViewModelProviders.of(this, factory).get(ProfileViewModel.class);
     }
 

@@ -1,59 +1,65 @@
 package com.covidvirus.app.data;
 
-import android.content.SharedPreferences;
-
-import com.covidvirus.app.App;
-import com.covidvirus.app.data.network.services.DataService;
+import com.covidvirus.app.data.local.SharedPreferencesHelper;
+import com.covidvirus.app.data.network.model.CountryDataModel;
+import com.covidvirus.app.data.network.model.GlobalDataModel;
+import com.covidvirus.app.data.network.model.Location;
+import com.covidvirus.app.data.network.services.data.DataService;
 import com.covidvirus.app.data.network.services.location.LocationService;
 
-import static android.content.Context.MODE_PRIVATE;
+import java.util.List;
+
+import io.reactivex.Single;
 
 public class DataManager {
-
-    private static DataManager mInstance;
-    private SharedPreferences sharedPreferences;
-    public static final String MY_PREFS_NAME = "covid_pref";
-    public static final String COUNTRY_KEY = "county";
-    public static final String RUN_COUNT_KEY = "run_count";
     public static final int MAX_COUNT = 5;
 
+    private static DataManager mInstance;
+    private SharedPreferencesHelper sharedPreferencesHelper;
+    private LocationService locationService;
+    private DataService dataService;
+
     private DataManager(){
-           sharedPreferences = App.getInstance().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+        sharedPreferencesHelper = SharedPreferencesHelper.getInstance();
+        locationService = LocationService.getInstance();
+        dataService = DataService.getInstance();
     }
 
     public static synchronized DataManager getInstance(){
-        return mInstance == null ? new DataManager() : mInstance;
+        return mInstance == null ? mInstance = new DataManager() : mInstance;
     }
 
     public void setDefaultCountry(String country){
-        sharedPreferences.edit()
-                .putString(COUNTRY_KEY, country)
-                .apply();
+        sharedPreferencesHelper.setDefaultCountry(country);
     }
 
     public String getDefaultCountry(){
-        return sharedPreferences.getString(COUNTRY_KEY, null);
+        return sharedPreferencesHelper.getDefaultCountry();
     }
 
     public void setRunCount(){
         int count = getRunCount();
-        if (count == MAX_COUNT || count > MAX_COUNT) count = 0;
-        else count++;
-        sharedPreferences.edit()
-                .putInt(RUN_COUNT_KEY, count)
-                .apply();
+        if (count == MAX_COUNT || count > MAX_COUNT) count = 0; else count++;
+        sharedPreferencesHelper.setRunCount(count);
     }
 
     public int getRunCount(){
-        return sharedPreferences.getInt(RUN_COUNT_KEY, 0);
+        return sharedPreferencesHelper.getRunCount();
     }
 
-    public DataService getDataService(){
-        return DataService.getInstance();
+    public Single<GlobalDataModel> getGlobalData(){
+        return dataService.getGlobalData();
     }
 
-    public LocationService getLocationService(){
-        return LocationService.getInstance();
+    public Single<List<CountryDataModel>> getAllData(){
+        return dataService.getAllData();
     }
 
+    public Single<CountryDataModel> getDataByCountry(String country){
+        return dataService.getDataByCountry(country);
+    }
+
+    public Single<Location> getLocation() {
+        return locationService.getLocation();
+    }
 }

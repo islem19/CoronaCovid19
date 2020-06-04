@@ -4,15 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.covidvirus.app.data.network.services.DataService;
+import com.covidvirus.app.data.DataManager;
 
 
 public class ProfileViewModelFactory implements ViewModelProvider.Factory {
 
-    private final DataService mDataService;
+    private final DataManager dataManager;
 
-    public ProfileViewModelFactory(DataService mDataService){
-        this.mDataService = mDataService;
+    public ProfileViewModelFactory(DataManager dataManager){
+        this.dataManager = dataManager;
     }
 
 
@@ -20,7 +20,7 @@ public class ProfileViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ProfileViewModel.class)) {
-            return (T) new ProfileViewModel(mDataService);
+            return (T) new ProfileViewModel(dataManager);
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class");
